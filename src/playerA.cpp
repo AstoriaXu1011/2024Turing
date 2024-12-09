@@ -237,18 +237,24 @@ public:
 };
 
 vector<vector<int>> game_map; //游戏地图
-pair<float,float> GunnerA_Pos; //GunnerA位置
-pair<float,float> HurlerA_Pos; //HurlerA位置
-pair<float,float> MedicA_Pos; //MedicA位置
-pair<float,float> GunnerB_Pos; //GunnerB位置
-pair<float,float> HurlerB_Pos; //HurlerB位置
-pair<float,float> MedicB_Pos; //MedicB位置
-float GunnerA_HP; //GunnerA血量
-float HurlerA_HP; //HurlerA血量
-float MedicA_HP;  //MedicA血量
-float GunnerB_HP; //GunnerB血量
-float HurlerB_HP; //HurlerB血量
-float MedicB_HP;  //MedicB血量
+// pair<float,float> GunnerA_Pos; //GunnerA位置
+// pair<float,float> HurlerA_Pos; //HurlerA位置
+// pair<float,float> MedicA_Pos; //MedicA位置
+// pair<float,float> GunnerB_Pos; //GunnerB位置
+// pair<float,float> HurlerB_Pos; //HurlerB位置
+// pair<float,float> MedicB_Pos; //MedicB位置
+// float GunnerA_HP; //GunnerA血量
+// float HurlerA_HP; //HurlerA血量
+// float MedicA_HP;  //MedicA血量
+// float GunnerB_HP; //GunnerB血量
+// float HurlerB_HP; //HurlerB血量
+// float MedicB_HP;  //MedicB血量
+
+Gunner GunnerA, GunnerB;
+Hurler HurlerA, HurlerB;
+Medic MedicA, MedicB;
+
+
 bool has_coin; //金币存在信息
 pair<float,float> coin_Pos; //金币位置信息
 int scoreA; //A阵营得分
@@ -296,37 +302,31 @@ void soldier_input()
         {
             if (type == "GunnerA")
             {
-                GunnerA_HP = hp;
-                GunnerA_Pos.first = x;
-                GunnerA_Pos.second = y;
+                GunnerA.set_hp(hp);
+                GunnerA.set_pos(x, y);
             }else if (type == "HurlerA")
             {
-                HurlerA_HP = hp;
-                HurlerA_Pos.first = x;
-                HurlerA_Pos.second = y;
+                HurlerA.set_hp(hp);
+                HurlerA.set_pos(x, y);
             }else if (type == "MedicA")
             {
-                MedicA_HP = hp;
-                MedicA_Pos.first = x;
-                MedicA_Pos.second = y;
+                MedicA.set_hp(hp);
+                MedicA.set_pos(x, y);
             }
         }else if (team == "B")
         {
             if (type == "GunnerB")
             {
-                GunnerB_HP = hp;
-                GunnerB_Pos.first = x;
-                GunnerB_Pos.second = y;
+                GunnerB.set_hp(hp);
+                GunnerB.set_pos(x, y);
             }else if (type == "HurlerB")
             {
-                HurlerB_HP = hp;
-                HurlerB_Pos.first = x;
-                HurlerB_Pos.second = y;
+                HurlerB.set_hp(hp);
+                HurlerB.set_pos(x, y);
             }else if (type == "MedicB")
             {
-                MedicB_HP = hp;
-                MedicB_Pos.first = x;
-                MedicB_Pos.second = y;
+                MedicB.set_hp(hp);
+                MedicB.set_pos(x, y);
             }
         }
     }
@@ -433,23 +433,22 @@ void per_frame_input()
 void output_command() //请不要删除End一行，每行输出记得加上换行符
 {
     //示例代码
-    if (frame_count < 1000)
-    {
-        cout << "move gunner 5 16.5" << endl;
-    }else if (frame_count < 2000)
-    {
-        cout << "move gunner 15 16.5" << endl;
-    }else
-    {
-        cout << "shoot gunner " << GunnerA_Pos.first + 1 << " " << GunnerA_Pos.second << endl;
-    }
-    cout << "skill hurler 1 10 10" << endl;
-    cout << "skill hurler 2" << endl;
-    cout << "skill gunner 1" << endl;
-    cout << "skill gunner 2" << endl;
-    cout << "skill medic 1 3.5 3.5" << endl;
-    cout << "skill medic 2 gunner" << endl;
-
+    // if (frame_count < 1000)
+    // {
+    //     cout << "move gunner 5 16.5" << endl;
+    // }else if (frame_count < 2000)
+    // {
+    //     cout << "move gunner 15 16.5" << endl;
+    // }else
+    // {
+    //     cout << "shoot gunner " << GunnerA_Pos.first + 1 << " " << GunnerA_Pos.second << endl;
+    // }
+    // cout << "skill hurler 1 10 10" << endl;
+    // cout << "skill hurler 2" << endl;
+    // cout << "skill gunner 1" << endl;
+    // cout << "skill gunner 2" << endl;
+    // cout << "skill medic 1 3.5 3.5" << endl;
+    // cout << "skill medic 2 gunner" << endl;
     //不要删除这一行
     cout << "End" << endl;
 }
