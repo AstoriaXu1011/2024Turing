@@ -6,6 +6,7 @@
 using namespace std;
 
 const int frame_rate = 50;
+const int INF = 1e9;
 
 struct Fire
 {
@@ -74,7 +75,7 @@ public:
     pair<float, float> pos;
     float hp;
     int type; // 0: A队物体, 1: B队物体
-}
+};
 
 class Gunner: public Object {
 public:
@@ -82,7 +83,7 @@ public:
         hp = 50;
         speed = 5;
         range = 20;
-        attack = 8;
+        attack = 5;
         defense = 4;
         _CD = {20 * frame_rate, 30 * frame_rate};
         _effect = {5 * frame_rate, 5 * frame_rate};
@@ -119,7 +120,7 @@ public:
     // 防御力
     float defense;
     // 技能 CD
-    vector<int> _CD:
+    vector<int> _CD;
     // 技能现在 CD
     vector<int> CD;
     // 技能效果现在持续时间
@@ -127,7 +128,113 @@ public:
     // 技能效果持续时间
     // 地雷设置成无限大
     vector<int> _effect;
-}
+};
+
+class Hurler: public Object {
+public:
+    Hurler() {
+        hp = 50;
+        speed = 5;
+        range = 20;
+        attack = 8;
+        defense = 6;
+        _CD = {25 * frame_rate, 0};
+        _effect = {3 * frame_rate, INF};
+        CD = {0, 0};
+        effect = {0, 0};
+    }
+    virtual string get_name() {
+        return "Hurler";
+    }
+
+    // index = 1 燃烧
+    // index = 2 隐形
+    virtual string skill(int index, vector<string> args) {
+        string skill_str = "skill " + this->get_name();
+        switch (index) {
+            case 1:
+                skill_str += " 1";
+                break;
+            case 2:
+                skill_str += " 2";
+                break;
+            default:
+                break;
+        }
+        return skill_str;
+    }
+public:
+    // 移动速度
+    float speed;
+    // 射程
+    float range;
+    // 攻击力
+    float attack;
+    // 防御力
+    float defense;
+    // 技能 CD
+    vector<int> _CD;
+    // 技能现在 CD
+    vector<int> CD;
+    // 技能效果现在持续时间
+    vector<int> effect;
+    // 技能效果持续时间
+    // 地雷设置成无限大
+    vector<int> _effect;
+};
+
+class Medic: public Object {
+public:
+    Medic() {
+        hp = 50;
+        speed = 5;
+        range = 20;
+        attack = 5;
+        defense = 6;
+        _CD = {25 * frame_rate, 60 * frame_rate};
+        _effect = {3 * frame_rate, INF};
+        CD = {0, 0};
+        effect = {0, 0};
+    }
+    virtual string get_name() {
+        return "Medic";
+    }
+
+    // index = 1 治疗
+    // index = 2 盾
+    virtual string skill(int index, vector<string> args) {
+        string skill_str = "skill " + this->get_name();
+        switch (index) {
+            case 1:
+                skill_str += " 1";
+                break;
+            case 2:
+                skill_str += " 2";
+                break;
+            default:
+                break;
+        }
+        return skill_str;
+    }
+public:
+    // 移动速度
+    float speed;
+    // 射程
+    float range;
+    // 攻击力
+    float attack;
+    // 防御力
+    float defense;
+    // 技能 CD
+    vector<int> _CD;
+    // 技能现在 CD
+    vector<int> CD;
+    // 技能效果现在持续时间
+    vector<int> effect;
+    // 技能效果持续时间
+    // 地雷设置成无限大
+    vector<int> _effect;
+};
 
 vector<vector<int>> game_map; //游戏地图
 pair<float,float> GunnerA_Pos; //GunnerA位置
