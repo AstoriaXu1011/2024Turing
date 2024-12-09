@@ -1,9 +1,11 @@
 #include <iostream>
-#include <math.h>
-#include <string.h>
+#include <cmath>
+#include <string>
 #include <vector>
 
 using namespace std;
+
+const int frame_rate = 50;
 
 struct Fire
 {
@@ -16,6 +18,116 @@ struct Potion
     float x;
     float y;
 };
+
+class Object {
+public:
+
+    string move(float x, float y) {
+        return "move " + this->get_name() + " " + to_string(x) + " " + to_string(y);
+    }
+
+    string shoot(float x, float y) {
+        return "shoot " + this->get_name() + " " + to_string(x) + " " + to_string(y);
+    }
+
+    // index: 技能id
+    // args: 技能参数
+    virtual string skill(int index, vector<string> args) = 0;
+    
+    // 获取角色名称
+    virtual string get_name() = 0;
+    void set_pos(float x, float y) {
+        pos.first = x;
+        pos.second = y;
+    }
+
+    // 更新位置
+    virtual void set_pos(pair<float, float> pos) {
+        this->pos = pos;
+    }
+
+    // 获取位置
+    virtual pair<float, float> get_pos() {
+        return pos;
+    }
+    
+    // 更新hp
+    void set_hp(float hp) {
+        this->hp = hp;
+    }
+
+    // 获取hp
+    float get_hp() {
+        return hp;
+    }
+    // 设置阵营
+    void set_type(int type) {
+        this->type = type;
+    }
+
+    // 获取阵营
+    int get_type() {
+        return type;
+    }
+
+public:
+    pair<float, float> pos;
+    float hp;
+    int type; // 0: A队物体, 1: B队物体
+}
+
+class Gunner: public Object {
+public:
+    Gunner() {
+        hp = 50;
+        speed = 5;
+        range = 20;
+        attack = 8;
+        defense = 4;
+        _CD = {20 * frame_rate, 30 * frame_rate};
+        _effect = {5 * frame_rate, 5 * frame_rate};
+        CD = {0, 0};
+        effect = {0, 0};
+    }
+    virtual string get_name() {
+        return "Gunner";
+    }
+
+    // index = 1 加速
+    // index = 2 射速
+    virtual string skill(int index, vector<string> args) {
+        string skill_str = "skill " + this->get_name();
+        switch (index) {
+            case 1:
+                skill_str += " 1";
+                break;
+            case 2:
+                skill_str += " 2";
+                break;
+            default:
+                break;
+        }
+        return skill_str;
+    }
+public:
+    // 移动速度
+    float speed;
+    // 射程
+    float range;
+    // 攻击力
+    float attack;
+    // 防御力
+    float defense;
+    // 技能 CD
+    vector<int> _CD:
+    // 技能现在 CD
+    vector<int> CD;
+    // 技能效果现在持续时间
+    vector<int> effect;
+    // 技能效果持续时间
+    // 地雷设置成无限大
+    vector<int> _effect;
+}
 
 vector<vector<int>> game_map; //游戏地图
 pair<float,float> GunnerA_Pos; //GunnerA位置
