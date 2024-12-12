@@ -2,6 +2,7 @@
 #include <cmath>
 #include <string>
 #include <vector>
+#include <queue>
 
 using namespace std;
 
@@ -237,6 +238,44 @@ public:
 };
 
 vector<vector<int>> game_map; //游戏地图
+
+bool isOK(int x, int y, int n, int m) {
+    if (x < 0 || x >= n || y < 0 || y >= m) return false;
+    return true;
+}
+
+vector<pair<float, float>> bfs(vector<vector<int>> &Map, pair<float, float> st, pair<float, float> ed) {
+    int n = Map.size(), m = Map[0].size();
+    queue<pair<int, int>> Q;
+    vector<vector<int>> vis(n, vector<int>(m, -1));
+    vector<int> dx{1, 0, -1, 0}, dy{0, 1, 0, -1};
+    int tx = ed.first, ty = ed.second;
+    int sx = st.first, sy = st.second;
+    Q.push({sx, sy});
+    while (!Q.empty()) {
+        auto [cx, cy] = Q.front();
+        Q.pop();
+        for (int i = 0; i < 4; i++) {
+            int nx = cx + dx[i], ny = cy + dy[i];
+            if (isOK(nx, ny, n, m) && vis[nx][ny] != -1 && Map[nx][ny] != 2 && Map[nx][ny] != 3) {
+                vis[nx][ny] = i;
+                Q.push({nx, ny});
+            }
+        }
+        if (vis[tx][ty] != -1) break;
+    }
+    vector<pair<float, float>> path;
+    path.emplace_back(ed);
+    int cx = tx, cy = ty;
+    float rx = st.first - sx, ry = st.second - sy;
+    while (cx != sx && cy != sy) {
+        path.emplace_back(cx + rx, cy + ry);
+        int dir = vis[cx][cy];
+        cx -= dx[dir], cy -= dy[dir];
+    }
+    return path;
+}
+
 // pair<float,float> GunnerA_Pos; //GunnerA位置
 // pair<float,float> HurlerA_Pos; //HurlerA位置
 // pair<float,float> MedicA_Pos; //MedicA位置
